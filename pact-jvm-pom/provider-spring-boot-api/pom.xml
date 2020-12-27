@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>mdaros.labs.contract.testing.pact</groupId>
+		<artifactId>pact-jvm-pom</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>provider-spring-boot-api</artifactId>
+	<name>provider-spring-boot-api</name>
+
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>au.com.dius</groupId>
+			<artifactId>pact-jvm-provider-junit_2.11</artifactId>
+			<version>3.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>au.com.dius.pact</groupId>
+			<artifactId>pact-specification-test</artifactId>
+			<version>4.1.12</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-surefire-plugin</artifactId>-->
+<!--				<version>2.22.2</version>-->
+<!--			</plugin>-->
+
+			<plugin>
+				<groupId>au.com.dius.pact.provider</groupId>
+				<artifactId>maven</artifactId>
+				<version>4.1.12</version>
+
+
+				<configuration>
+					<serviceProviders>
+						<!-- You can define as many as you need, but each must have a unique name -->
+						<serviceProvider>
+							<name>test_provider</name>
+							<!-- All the provider properties are optional, and have sensible defaults (shown below) -->
+							<protocol>http</protocol>
+							<host>localhost</host>
+							<port>8080</port>
+							<path>/api/v1</path>
+							<consumers>
+								<!-- Again, you can define as many consumers for each provider as you need, but each must have a unique name -->
+								<consumer>
+									<name>test_consumer</name>
+									<!--  currently supports a file path using pactSource or a URL using pactUrl -->
+									<pactSource>src/test/resources/pacts/pact-contract.json</pactSource>
+								</consumer>
+							</consumers>
+						</serviceProvider>
+					</serviceProviders>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
